@@ -2,72 +2,118 @@ module.exports = function () {
 
     var doc = document,
         lettersStr = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789',
-        letterSize = 24,
+        charactersArray = lettersStr.split(''),
+        totalCharacters = charactersArray.length;
+
+    var letterSize = 24,
         lettersWrapper = doc.getElementById('letters-wrapper'),
-        allLetters,
-        totalLetters,
+        letterColsArray,
+        letterArray,
+        colTotal,
+        letterTotal,
         zRange = 250,
         tickCount = 0;
 
     createLetters();
 
     function createLetters() {
-        var w = window.innerWidth / letterSize | 0,
-            h = window.innerHeight / letterSize | 0;
+        var iw = window.innerWidth,
+            ih = window.innerHeight,
+            w = iw / letterSize | 0,
+            h = ih / letterSize | 0;
 
-        for (var i = 0; i < w; i++) {
-            var letters = doc.createElement('div');
+        for (var i = 0; i < 1; i++) {
+            var col = doc.createElement('div');
 
-            var ranZ = Math.random() * 500 - 250;
+            col.yPos = -ih;
+            col.zPos = Math.random() * (zRange * 2) - zRange;
 
-            letters.className = 'letters';
-            //            letters.style.webkitTransform = 'scale(' + ranScale + ', ' + ranScale + ')';
-            letters.style.webkitTransform = 'translate3d(0px, 0px, ' + ranZ + 'px)';
-            letters.style.webkitFilter = 'blur(' + Math.abs(ranZ / zRange) * 3 + 'px)';
-            lettersWrapper.appendChild(letters);
+            col.className = 'letters';
+            col.style.webkitTransform = 'translate3d(0px, ' + 0 + 'px, ' + col.zPos + 'px)';
+            col.style.webkitFilter = 'blur(' + Math.abs(col.zPos / zRange) * 3 + 'px)';
+
+            TweenMax.to(col, 6, {yPos: ih, delay: Math.random() * 5, repeat: -1});
+
+            lettersWrapper.appendChild(col);
 
             var letterCover = doc.createElement('div');
             letterCover.className = 'letter-cover';
-            letters.appendChild(letterCover);
+            col.appendChild(letterCover);
 
             for (var j = 0; j < h; j++) {
                 var letter = doc.createElement('div');
                 letter.className = "letter";
-                letter.textContent = lettersStr.charAt(Math.random() * lettersStr.length | 0);
-                letters.appendChild(letter);
+                //                letter.style.webkitTransform = 'translate3d(0px, ' + j / 4 * letterSize + 'px, 0px)';
+                letter.textContent = charactersArray[Math.random() * lettersStr.length | 0];
+                col.appendChild(letter);
             }
         }
 
-        allLetters = doc.getElementsByClassName('letter');
-        totalLetters = allLetters.length;
-    }
+        letterColsArray = doc.getElementsByClassName('letters');
+        letterArray = doc.getElementsByClassName('letter');
 
-    window.requestAnimFrame = (function () {
-        return  window.requestAnimationFrame ||
-            window.webkitRequestAnimationFrame ||
-            window.mozRequestAnimationFrame ||
-            function (callback) {
-                window.setTimeout(callback, 1000 / 60);
-            };
-    })();
+        colTotal = letterColsArray.length;
+        letterTotal = letterArray.length;
+    }
 
     function tick() {
-        requestAnimFrame(tick);
+        // move cols
+//        var col;
+//
+//        for (var i = 0; i < colTotal; i++) {
+//            col = letterColsArray[i];
+//
+//            col.style.webkitTransform = 'translate3d(0px, ' + col.yPos + 'px, ' + col.zPos + 'px)';
+//        }
 
-        // force 20fps
-        tickCount++
-        if (tickCount < 3) {
-            return;
-        }
-        tickCount = 0
+        // force 20fps for letter changing
+//        tickCount++;
+//        if (tickCount < 300) {
+//            return;
+//        }
+//        tickCount = 0;
+//
+//        var ranArray, newArray;
 
-        for (var i = 0; i < totalLetters; i++) {
-            var l = allLetters[i];
+//        randomize letters
+        for (var i = 0; i < colTotal; i++) {
+            //            letterArray[i].firstChild.nodeValue = charactersArray[Math.random() * totalCharacters | 0];
 
-            // fastest way to set element value
-            l.firstChild.nodeValue = lettersStr.charAt(Math.random() * lettersStr.length | 0);
+            var col = letterColsArray[i];
+
+            var cl = col.childNodes.length;
+
+            var ls = col.getElementsByClassName('letter');
+
+            for (var j = 0; j < ls.length; j++) {
+//                ranArray.push(col.removeChild(col.childNodes[j]));
+
+                var l = ls[j];
+
+//                l.style.webkitTransform = 'translate3d(0px, ' + 400 + 'px, 0px)';
+                l.style.opacity = .1;
+
+                console.log(l.style.opacity);
+            }
+
+//            newArray = shuffleArray(ranArray);
+//
+//            var nal = newArray.length;
+//
+//            for (j = 0; j < nal; j++) {
+//                col.appendChild(newArray[j]);
+//            }
         }
     }
 
-//    tick();
+//    function shuffleArray(o) {
+//        for (var j, x, i = o.length; i; j = Math.floor(Math.random() * i), x = o[--i], o[i] = o[j], o[j] = x) {
+//            ;
+//        }
+//        return o;
+//    };
+
+    tick();
+
+//    TweenMax.ticker.addEventListener('tick', tick);
 };
