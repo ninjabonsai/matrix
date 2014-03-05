@@ -12,7 +12,8 @@ module.exports = function () {
         colTotal,
         letterTotal,
         zRange = 250,
-        tickCount = 0;
+        tickCount = 0,
+        lettersMatrix = [];
 
     createLetters();
 
@@ -22,17 +23,17 @@ module.exports = function () {
             w = iw / letterSize | 0,
             h = ih / letterSize | 0;
 
-        for (var i = 0; i < 1; i++) {
+        for (var i = 0; i < w; i++) {
             var col = doc.createElement('div');
 
             col.yPos = -ih;
             col.zPos = Math.random() * (zRange * 2) - zRange;
 
             col.className = 'letters';
-            col.style.webkitTransform = 'translate3d(0px, ' + 0 + 'px, ' + col.zPos + 'px)';
-            col.style.webkitFilter = 'blur(' + Math.abs(col.zPos / zRange) * 3 + 'px)';
+//            col.style.webkitFilter = 'blur(' + Math.abs(col.zPos / zRange) * 3 + 'px)';
+            col.style.opacity = 1 - Math.abs(col.zPos / zRange);
 
-            TweenMax.to(col, 6, {yPos: ih, delay: Math.random() * 5, repeat: -1});
+            TweenMax.to(col, 5, {yPos: ih, delay: Math.random() * 5, repeat: -1, ease: Quad.easeIn});
 
             lettersWrapper.appendChild(col);
 
@@ -43,7 +44,6 @@ module.exports = function () {
             for (var j = 0; j < h; j++) {
                 var letter = doc.createElement('div');
                 letter.className = "letter";
-                //                letter.style.webkitTransform = 'translate3d(0px, ' + j / 4 * letterSize + 'px, 0px)';
                 letter.textContent = charactersArray[Math.random() * lettersStr.length | 0];
                 col.appendChild(letter);
             }
@@ -54,66 +54,73 @@ module.exports = function () {
 
         colTotal = letterColsArray.length;
         letterTotal = letterArray.length;
+
+        for (i = 0; i < colTotal; i++) {
+            var col = letterColsArray[i];
+
+            var colArray = col.getElementsByClassName('letter');
+
+            var colLength = colArray.length;
+
+            lettersMatrix.push([]);
+
+            for (var j = 0; j < colLength; j++) {
+                lettersMatrix[i].push(colArray[j]);
+            }
+        }
     }
 
     function tick() {
         // move cols
-//        var col;
-//
-//        for (var i = 0; i < colTotal; i++) {
-//            col = letterColsArray[i];
-//
-//            col.style.webkitTransform = 'translate3d(0px, ' + col.yPos + 'px, ' + col.zPos + 'px)';
-//        }
+        var col;
 
-        // force 20fps for letter changing
-//        tickCount++;
-//        if (tickCount < 300) {
-//            return;
-//        }
-//        tickCount = 0;
-//
-//        var ranArray, newArray;
-
-//        randomize letters
         for (var i = 0; i < colTotal; i++) {
-            //            letterArray[i].firstChild.nodeValue = charactersArray[Math.random() * totalCharacters | 0];
+            col = letterColsArray[i];
 
-            var col = letterColsArray[i];
+            col.style.webkitTransform = 'translate3d(0px, ' + col.yPos + 'px, ' + col.zPos + 'px)';
+        }
 
-            var cl = col.childNodes.length;
+        // force 5fps for letter changing
+        tickCount++;
+        if (tickCount > 12) {
+            return;
+        }
 
-            var ls = col.getElementsByClassName('letter');
+//        tickCount = 0;
 
-            for (var j = 0; j < ls.length; j++) {
-//                ranArray.push(col.removeChild(col.childNodes[j]));
+        //        randomize letters
+        for (var i = 0; i < colTotal; i++) {
+            var newArray = shuffle(lettersMatrix[i]);
 
-                var l = ls[j];
+            var nal = newArray.length;
 
-//                l.style.webkitTransform = 'translate3d(0px, ' + 400 + 'px, 0px)';
-                l.style.opacity = .1;
-
-                console.log(l.style.opacity);
+            for (var j = 1; j < nal; j++) {
+                newArray[j].style.webkitTransform = 'translate3d(0px, ' + letterSize * j + 'px, 0px)';
             }
-
-//            newArray = shuffleArray(ranArray);
-//
-//            var nal = newArray.length;
-//
-//            for (j = 0; j < nal; j++) {
-//                col.appendChild(newArray[j]);
-//            }
         }
     }
 
-//    function shuffleArray(o) {
-//        for (var j, x, i = o.length; i; j = Math.floor(Math.random() * i), x = o[--i], o[i] = o[j], o[j] = x) {
-//            ;
-//        }
-//        return o;
-//    };
+    function shuffle(array) {
+        var currentIndex = array.length
+            , temporaryValue
+            , randomIndex
+            ;
 
-    tick();
+        // While there remain elements to shuffle...
+        while (0 !== currentIndex) {
 
-//    TweenMax.ticker.addEventListener('tick', tick);
+            // Pick a remaining element...
+            randomIndex = Math.floor(Math.random() * currentIndex);
+            currentIndex -= 1;
+
+            // And swap it with the current element.
+            temporaryValue = array[currentIndex];
+            array[currentIndex] = array[randomIndex];
+            array[randomIndex] = temporaryValue;
+        }
+
+        return array;
+    }
+
+    TweenMax.ticker.addEventListener('tick', tick);
 };
