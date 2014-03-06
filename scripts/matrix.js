@@ -30,7 +30,7 @@ module.exports = function () {
             col.zPos = Math.random() * (zRange * 2) - zRange;
 
             col.className = 'letters';
-//            col.style.webkitFilter = 'blur(' + Math.abs(col.zPos / zRange) * 3 + 'px)';
+            //            col.style.webkitFilter = 'blur(' + Math.abs(col.zPos / zRange) * 3 + 'px)';
             col.style.opacity = 1 - Math.abs(col.zPos / zRange);
 
             TweenMax.to(col, 5, {yPos: ih, delay: Math.random() * 5, repeat: -1, ease: Quad.easeIn});
@@ -80,46 +80,21 @@ module.exports = function () {
             col.style.webkitTransform = 'translate3d(0px, ' + col.yPos + 'px, ' + col.zPos + 'px)';
         }
 
-        // force 5fps for letter changing
-        tickCount++;
-        if (tickCount > 12) {
-            return;
-        }
+        // force 20fps for letter changing
+        //        tickCount++;
+        //        if (tickCount > 3) {
+        //            return;
+        //        }
+        //
+        //        tickCount = 0;
 
-//        tickCount = 0;
+        var currentLetterUpdatePos = Math.random() * lettersMatrix.length | 0,
+            l = lettersMatrix[currentLetterUpdatePos].length;
 
         //        randomize letters
-        for (var i = 0; i < colTotal; i++) {
-            var newArray = shuffle(lettersMatrix[i]);
-
-            var nal = newArray.length;
-
-            for (var j = 1; j < nal; j++) {
-                newArray[j].style.webkitTransform = 'translate3d(0px, ' + letterSize * j + 'px, 0px)';
-            }
+        for (var i = 0; i < l; i++) {
+            lettersMatrix[currentLetterUpdatePos][i].firstChild.nodeValue = charactersArray[Math.random() * lettersStr.length | 0];
         }
-    }
-
-    function shuffle(array) {
-        var currentIndex = array.length
-            , temporaryValue
-            , randomIndex
-            ;
-
-        // While there remain elements to shuffle...
-        while (0 !== currentIndex) {
-
-            // Pick a remaining element...
-            randomIndex = Math.floor(Math.random() * currentIndex);
-            currentIndex -= 1;
-
-            // And swap it with the current element.
-            temporaryValue = array[currentIndex];
-            array[currentIndex] = array[randomIndex];
-            array[randomIndex] = temporaryValue;
-        }
-
-        return array;
     }
 
     TweenMax.ticker.addEventListener('tick', tick);
