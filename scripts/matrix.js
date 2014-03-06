@@ -2,17 +2,13 @@ module.exports = function () {
 
     var doc = document,
         lettersStr = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789',
-        charactersArray = lettersStr.split(''),
-        totalCharacters = charactersArray.length;
+        charactersArray = lettersStr.split('');
 
     var letterSize = 24,
         lettersWrapper = doc.getElementById('letters-wrapper'),
         letterColsArray,
-        letterArray,
         colTotal,
-        letterTotal,
         zRange = 250,
-        tickCount = 0,
         lettersMatrix = [],
         letterCoversArray,
         totalCovers;
@@ -37,7 +33,7 @@ module.exports = function () {
 
             var ranStart = Math.random() * 8;
 
-            TweenMax.to(col, 12, {yPos: ih, delay: ranStart, repeat: -1, ease: Quad.easeIn});
+            TweenMax.to(col, 8, {yPos: ih, delay: ranStart, repeat: -1, ease: Quad.easeIn});
 
             lettersWrapper.appendChild(col);
 
@@ -46,7 +42,7 @@ module.exports = function () {
 
             letterCover.yPos = -ih * 2;
             letterCover.style.height = ih * 3 + 'px';
-            TweenMax.to(letterCover, 8, {yPos: 0, delay: ranStart, repeat: -1, ease: Quad.easeIn});
+            TweenMax.to(letterCover, 4, {yPos: 0, delay: ranStart, repeatDelay: 4, repeat: -1, ease: Quad.easeIn});
             letterCover.style.webkitTransform = 'translate3d(0px, ' + letterCover.yPos + 'px, 0px)';
 
             col.appendChild(letterCover);
@@ -60,11 +56,9 @@ module.exports = function () {
         }
 
         letterColsArray = doc.getElementsByClassName('letters');
-        letterArray = doc.getElementsByClassName('letter');
         letterCoversArray = doc.getElementsByClassName('letter-cover');
 
         colTotal = letterColsArray.length;
-        letterTotal = letterArray.length;
         totalCovers = letterCoversArray.length;
 
         for (i = 0; i < colTotal; i++) {
@@ -83,6 +77,7 @@ module.exports = function () {
     }
 
     function tick() {
+        //
         // move cols
         var col,
             letterCover;
@@ -95,18 +90,11 @@ module.exports = function () {
             letterCover.style.webkitTransform = 'translate3d(0px, ' + letterCover.yPos + 'px, 0px)';
         }
 
-        // force 20fps for letter changing
-        //        tickCount++;
-        //        if (tickCount > 3) {
-        //            return;
-        //        }
         //
-        //        tickCount = 0;
-
+        // update letters in a random column
         var currentLetterUpdatePos = Math.random() * lettersMatrix.length | 0,
             l = lettersMatrix[currentLetterUpdatePos].length;
 
-        //        randomize letters
         for (var i = 0; i < l; i++) {
             lettersMatrix[currentLetterUpdatePos][i].firstChild.nodeValue = charactersArray[Math.random() * lettersStr.length | 0];
         }

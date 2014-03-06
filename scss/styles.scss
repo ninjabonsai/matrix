@@ -4,7 +4,6 @@
     src: url('../fonts/matrix_code_nfi-webfont.eot?#iefix') format('embedded-opentype'), url('../fonts/matrix_code_nfi-webfont.woff') format('woff'), url('../fonts/matrix_code_nfi-webfont.ttf') format('truetype'), url('../fonts/matrix_code_nfi-webfont.svg#matrix_code_nfiregular') format('svg');
     font-weight: normal;
     font-style: normal;
-
 }
 
 body {
@@ -26,7 +25,6 @@ body {
 }
 
 .letter-cover {
-//    -webkit-transform-style: preserve-3d;
     position: absolute;
     top: 0;
     left: 0;
@@ -36,7 +34,6 @@ body {
 }
 
 .letter {
-    //    position: absolute;
     width: 24px;
     height: 24px;
     font-size: 24px;
