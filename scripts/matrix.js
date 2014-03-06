@@ -13,7 +13,9 @@ module.exports = function () {
         letterTotal,
         zRange = 250,
         tickCount = 0,
-        lettersMatrix = [];
+        lettersMatrix = [],
+        letterCoversArray,
+        totalCovers;
 
     createLetters();
 
@@ -26,19 +28,27 @@ module.exports = function () {
         for (var i = 0; i < w; i++) {
             var col = doc.createElement('div');
 
-            col.yPos = -ih;
+            col.yPos = 0;
             col.zPos = Math.random() * (zRange * 2) - zRange;
 
             col.className = 'letters';
             //            col.style.webkitFilter = 'blur(' + Math.abs(col.zPos / zRange) * 3 + 'px)';
             col.style.opacity = 1 - Math.abs(col.zPos / zRange);
 
-            TweenMax.to(col, 5, {yPos: ih, delay: Math.random() * 5, repeat: -1, ease: Quad.easeIn});
+            var ranStart = Math.random() * 8;
+
+            TweenMax.to(col, 12, {yPos: ih, delay: ranStart, repeat: -1, ease: Quad.easeIn});
 
             lettersWrapper.appendChild(col);
 
             var letterCover = doc.createElement('div');
             letterCover.className = 'letter-cover';
+
+            letterCover.yPos = -ih * 2;
+            letterCover.style.height = ih * 3 + 'px';
+            TweenMax.to(letterCover, 8, {yPos: 0, delay: ranStart, repeat: -1, ease: Quad.easeIn});
+            letterCover.style.webkitTransform = 'translate3d(0px, ' + letterCover.yPos + 'px, 0px)';
+
             col.appendChild(letterCover);
 
             for (var j = 0; j < h; j++) {
@@ -51,9 +61,11 @@ module.exports = function () {
 
         letterColsArray = doc.getElementsByClassName('letters');
         letterArray = doc.getElementsByClassName('letter');
+        letterCoversArray = doc.getElementsByClassName('letter-cover');
 
         colTotal = letterColsArray.length;
         letterTotal = letterArray.length;
+        totalCovers = letterCoversArray.length;
 
         for (i = 0; i < colTotal; i++) {
             var col = letterColsArray[i];
@@ -72,12 +84,15 @@ module.exports = function () {
 
     function tick() {
         // move cols
-        var col;
+        var col,
+            letterCover;
 
         for (var i = 0; i < colTotal; i++) {
             col = letterColsArray[i];
-
             col.style.webkitTransform = 'translate3d(0px, ' + col.yPos + 'px, ' + col.zPos + 'px)';
+
+            letterCover = letterCoversArray[i];
+            letterCover.style.webkitTransform = 'translate3d(0px, ' + letterCover.yPos + 'px, 0px)';
         }
 
         // force 20fps for letter changing
