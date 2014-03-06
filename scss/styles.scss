@@ -26,6 +26,9 @@ body {
     text-shadow: 0px -6px 7px green;
     -webkit-transform: translate3d(0px, 0px, 0px);
     -moz-transform: translate3d(0px, 0px, 0px);
+
+    // nice but slows things down a bit
+    //mix-blend-mode: screen;
 }
 
 .letter-cover {
