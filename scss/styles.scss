@@ -1,7 +1,10 @@
 @font-face {
-    font-family: 'matrix_code_nfiregular';
-    src: url('../fonts/matrix_code_nfi-webfont.eot');
-    src: url('../fonts/matrix_code_nfi-webfont.eot?#iefix') format('embedded-opentype'), url('../fonts/matrix_code_nfi-webfont.woff') format('woff'), url('../fonts/matrix_code_nfi-webfont.ttf') format('truetype'), url('../fonts/matrix_code_nfi-webfont.svg#matrix_code_nfiregular') format('svg');
+    font-family: MatrixCode;
+    src: url('http://ninjabonsai.net/testing/fonts/matrix/matrix_code_nfi-webfont.eot');
+    src: url('http://ninjabonsai.net/testing/fonts/matrix/matrix_code_nfi-webfont.eot?#iefix') format('embedded-opentype'),
+    url('http://ninjabonsai.net/testing/fonts/matrix/matrix_code_nfi-webfont.woff') format('woff'),
+    url('http://ninjabonsai.net/testing/fonts/matrix/matrix_code_nfi-webfont.ttf') format('truetype'),
+    url('http://ninjabonsai.net/testing/fonts/matrix/matrix_code_nfi-webfont.svg#matrix_code_nfiregular') format('svg');
     font-weight: normal;
     font-style: normal;
 }
@@ -16,12 +19,13 @@ body {
 }
 
 .letters {
-    display: inline-block;
+    position: absolute;
     text-align: center;
     width: 24px;
     opacity: 1;
     text-shadow: 0px -6px 7px green;
     -webkit-transform: translate3d(0px, 0px, 0px);
+    -moz-transform: translate3d(0px, 0px, 0px);
 }
 
 .letter-cover {
@@ -29,6 +33,7 @@ body {
     top: 0;
     left: 0;
     -webkit-transform: translate3d(0px, 0px, 0px);
+    -moz-transform: translate3d(0px, 0px, 0px);
     background-image: linear-gradient(rgba(0, 0, 0, 1) 33%, rgba(0, 0, 0, 1), rgba(0, 0, 0, 0) 65%, rgba(0, 0, 0, 1) 66%);
     width: 100%;
 }
@@ -37,8 +42,7 @@ body {
     width: 24px;
     height: 24px;
     font-size: 24px;
-    font-family: 'matrix_code_nfiregular';
+    font-family: MatrixCode;
     line-height: 24px;
     color: greenyellow;
-    //    -webkit-font-smoothing: none;
 }

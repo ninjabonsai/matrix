@@ -21,14 +21,19 @@ module.exports = function () {
             w = iw / letterSize | 0,
             h = ih / letterSize | 0;
 
+        w *= 3;
+
         for (var i = 0; i < w; i++) {
             var col = doc.createElement('div');
 
+//            col.xPos = i * (letterSize / 3);
+            col.xPos = Math.random() * iw | 0;
             col.yPos = 0;
             col.zPos = Math.random() * (zRange * 2) - zRange;
 
             col.className = 'letters';
             //            col.style.webkitFilter = 'blur(' + Math.abs(col.zPos / zRange) * 3 + 'px)';
+
             col.style.opacity = 1 - Math.abs(col.zPos / zRange);
 
             var ranStart = Math.random() * 8;
@@ -44,6 +49,7 @@ module.exports = function () {
             letterCover.style.height = ih * 3 + 'px';
             TweenMax.to(letterCover, 4, {yPos: 0, delay: ranStart, repeatDelay: 4, repeat: -1, ease: Quad.easeIn});
             letterCover.style.webkitTransform = 'translate3d(0px, ' + letterCover.yPos + 'px, 0px)';
+            letterCover.style.transform = 'translate3d(0px, ' + letterCover.yPos + 'px, 0px)';
 
             col.appendChild(letterCover);
 
@@ -84,10 +90,12 @@ module.exports = function () {
 
         for (var i = 0; i < colTotal; i++) {
             col = letterColsArray[i];
-            col.style.webkitTransform = 'translate3d(0px, ' + col.yPos + 'px, ' + col.zPos + 'px)';
+            col.style.webkitTransform = 'translate3d(' + col.xPos + 'px, ' + col.yPos + 'px, ' + col.zPos + 'px)';
+            col.style.transform = 'translate3d(' + col.xPos + 'px, ' + col.yPos + 'px, ' + col.zPos + 'px)';
 
             letterCover = letterCoversArray[i];
             letterCover.style.webkitTransform = 'translate3d(0px, ' + letterCover.yPos + 'px, 0px)';
+            letterCover.style.transform = 'translate3d(0px, ' + letterCover.yPos + 'px, 0px)';
         }
 
         //
