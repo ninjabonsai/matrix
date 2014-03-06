@@ -1,7 +1,7 @@
 module.exports = function () {
 
     var doc = document,
-        lettersStr = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789',
+        lettersStr = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789$+-*/=%"#&_(),.;:?!{}[]^~',
         charactersArray = lettersStr.split('');
 
     var letterSize = 24,
